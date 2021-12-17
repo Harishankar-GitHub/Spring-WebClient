@@ -51,11 +51,12 @@ public class ExternalServiceController {
 
     @PutMapping
     public ResponseEntity<List<Data>> updateData(@RequestBody Data data) {
-        dataList
-                .stream()
-                .filter(currentData -> currentData.getId() == data.getId())
-                .findFirst()
-                .ifPresent(dataList::remove);
+        for (Data currentData : dataList) {
+            if (currentData.getId() == data.getId()) {
+                dataList.remove(currentData);
+                break;
+            }
+        }
         dataList.add(data);
         log.info("Updated data - {}", data.getId());
         return new ResponseEntity<>(dataList, HttpStatus.OK);
