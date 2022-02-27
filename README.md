@@ -10,6 +10,7 @@
 - [Spring Docs - WebClient](https://docs.spring.io/spring-framework/docs/5.0.7.RELEASE/spring-framework-reference/web-reactive.html#webflux-client)
 - [How to do it in Java - WebClient](https://howtodoinjava.com/spring-webflux/webclient-get-post-example/)
 - [Baeldung - WebClient](https://www.baeldung.com/spring-5-webclient)
+- [Spring Boot WebClient Cheat Sheet](https://medium.com/swlh/spring-boot-webclient-cheat-sheet-5be26cfa3e)
 
 ### Videos
 - [Java Brains - Spring 5 - WebClient](https://www.youtube.com/watch?v=F3uJyeAyv5g)

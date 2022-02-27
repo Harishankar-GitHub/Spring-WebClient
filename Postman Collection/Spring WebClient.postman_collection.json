@@ -137,6 +137,26 @@
 					"response": []
 				},
 				{
+					"name": "GET Data from External Service As ResponseEntity",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/webClient/responseEntity",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"webClient",
+								"responseEntity"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "POST Data to External Service",
 					"request": {
 						"method": "POST",

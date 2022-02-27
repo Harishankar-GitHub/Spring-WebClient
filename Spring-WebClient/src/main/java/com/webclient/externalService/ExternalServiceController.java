@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -36,17 +37,16 @@ public class ExternalServiceController {
         return new ResponseEntity<>(dataList, HttpStatus.OK);
     }
 
-    @SuppressWarnings("rawtypes")
     @PostMapping
-    public ResponseEntity postData(@RequestBody Data data) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public void postData(@RequestBody Data data) {
         for (Data currentData : dataList) {
             if (currentData.getId() == data.getId()) {
-                return new ResponseEntity<>(HttpStatus.CREATED);
+                return;
             }
         }
         dataList.add(data);
         log.info("Posted new data - {}", data.getId());
-        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping
@@ -62,9 +62,9 @@ public class ExternalServiceController {
         return new ResponseEntity<>(dataList, HttpStatus.OK);
     }
 
-    @SuppressWarnings("rawtypes")
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteData(@PathVariable int id) {
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteData(@PathVariable int id) {
         dataList
                 .stream()
                 .filter(currentData -> currentData.getId() == id)
@@ -72,6 +72,5 @@ public class ExternalServiceController {
                 .ifPresent(dataList::remove);
 
         log.info("Deleted data - {}", id);
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

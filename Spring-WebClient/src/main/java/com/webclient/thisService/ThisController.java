@@ -24,7 +24,8 @@ import reactor.core.publisher.Mono;
 @RequestMapping("webClient")
 public class ThisController {
 
-    private WebClient webClient;
+    private static final String EXTERNAL_SERVICE_URL = "externalService/";
+    private final WebClient webClient;
 
     @Autowired
     public ThisController(WebClient webClient) {
@@ -37,12 +38,28 @@ public class ThisController {
 
         Flux<Data> dataFlux = webClient
                 .get()
-                .uri("http://localhost:8080/externalService")
+                .uri(EXTERNAL_SERVICE_URL)
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .bodyToFlux(Data.class);
 
         return new ResponseEntity<>(dataFlux, HttpStatus.OK);
+    }
+
+    @GetMapping("responseEntity")
+    public ResponseEntity<Data[]> getDataListFromExternalServiceAsResponseEntity() {
+        log.info("Calling External API using WebClient to GET data list as Response Entity");
+
+        ResponseEntity<Data[]> responseEntity = webClient
+                .get()
+                .uri(EXTERNAL_SERVICE_URL)
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .toEntity(Data[].class)
+                .block();
+
+        assert responseEntity != null;
+        return new ResponseEntity<>(responseEntity.getBody(), HttpStatus.OK);
     }
 
     @PostMapping
@@ -51,7 +68,7 @@ public class ThisController {
 
         return webClient
                 .post()
-                .uri("http://localhost:8080/externalService")
+                .uri(EXTERNAL_SERVICE_URL)
                 .body(BodyInserters.fromValue(data))
                 .retrieve()
                 .bodyToMono(String.class);
@@ -63,7 +80,7 @@ public class ThisController {
 
         Flux<Data> dataFlux = webClient
                 .put()
-                .uri("http://localhost:8080/externalService")
+                .uri(EXTERNAL_SERVICE_URL)
                 .body(BodyInserters.fromValue(data))
                 .retrieve()
                 .bodyToFlux(Data.class);
@@ -77,7 +94,7 @@ public class ThisController {
 
         return webClient
                 .delete()
-                .uri("http://localhost:8080/externalService/" + id)
+                .uri(EXTERNAL_SERVICE_URL + id)
                 .retrieve()
                 .bodyToMono(String.class);
     }
