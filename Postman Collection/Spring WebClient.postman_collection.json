@@ -111,6 +111,26 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Send Failure Response",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/externalService/exception",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"externalService",
+								"exception"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -236,6 +256,26 @@
 							"path": [
 								"webClient",
 								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Handling Exception in WebClient",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/webClient/exception",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"webClient",
+								"exception"
 							]
 						}
 					},

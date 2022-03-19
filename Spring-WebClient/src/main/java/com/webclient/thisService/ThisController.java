@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -57,6 +58,31 @@ public class ThisController {
                 .retrieve()
                 .toEntity(Data[].class)
                 .block();
+
+        assert responseEntity != null;
+        return new ResponseEntity<>(responseEntity.getBody(), HttpStatus.OK);
+    }
+
+    @GetMapping("exception")
+    public ResponseEntity<Data[]> exceptionHandlingInWebClient() {
+        log.info("Calling External API using WebClient and handling Exception");
+        ResponseEntity<Data[]> responseEntity;
+
+        try {
+            responseEntity = webClient
+                    .get()
+                    .uri(EXTERNAL_SERVICE_URL + "exception")
+                    .accept(MediaType.APPLICATION_JSON)
+                    .retrieve()
+                    .toEntity(Data[].class)
+                    .block();
+        } catch (WebClientResponseException ex) {
+            // WebClientResponseException is thrown when the response status code of External API
+            // is not 2xx.
+            log.error("Failure response from External API");
+            log.info("External API Response Status Code: {}", ex.getRawStatusCode());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
         assert responseEntity != null;
         return new ResponseEntity<>(responseEntity.getBody(), HttpStatus.OK);

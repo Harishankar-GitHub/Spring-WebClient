@@ -37,6 +37,12 @@ public class ExternalServiceController {
         return new ResponseEntity<>(dataList, HttpStatus.OK);
     }
 
+    @GetMapping("exception")
+    public ResponseEntity<List<Data>> sendFailureResponse() {
+        log.info("Sending failure response from External API");
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void postData(@RequestBody Data data) {
